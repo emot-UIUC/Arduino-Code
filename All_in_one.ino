@@ -81,10 +81,10 @@ void loop()
       FastLED.show();
       for (i = 0; i < 150; i++)
       {
-        digitalWrite(9, LOW);
-        digitalWrite(5, LOW);
-        digitalWrite(10, HIGH);
-        digitalWrite(6, HIGH);
+        digitalWrite(9, LOW); // LEFT_DOWN
+        digitalWrite(5, LOW); // RIGHT_DOWN
+        digitalWrite(10, HIGH); //LEFT_UPPER
+        digitalWrite(6, HIGH); // RIGHT_UPPER
         delay(20);
         digitalWrite(9, LOW);
         digitalWrite(5, LOW);
