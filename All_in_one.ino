@@ -34,10 +34,10 @@ void setup()
   mpl115a2.begin();
 
   pinMode(11, INPUT);//PUSH BUTTON
-  pinMode(5, OUTPUT);//RESET SENSOR
-  pinMode(6, OUTPUT);//RESET SENSOR
-  pinMode(7, OUTPUT);//
-  pinMode(8, OUTPUT);//
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);//
+  pinMode(7, OUTPUT);//RESET SENSOR
+  pinMode(8, OUTPUT);//RESET SENSOR
   pinMode(9, OUTPUT);//
   pinMode(10, OUTPUT);//
 
