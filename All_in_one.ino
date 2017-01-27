@@ -152,7 +152,6 @@ void loop()
         
       case 3:  //*****************Sad***************************
       {
-        FastLED.setTemperature( TEMPERATURE_3 ); // first temperature
         leds[0] = CRGB::Blue; 
         leds[1] = CRGB::Blue;
         FastLED.show();
