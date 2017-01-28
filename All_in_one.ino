@@ -1,7 +1,18 @@
-int emotion = 7; //1 for angry;2 for happy; 3 for sad; 4 for fear; 5 for disgust; 6 for Love; 7 for suprise
+const int ANGRY = 1;
+const int HAPPY = 2;
+const int SAD = 3;
+const int FEAR = 4;
+const int DISGUST = 5;
+const int SUPRISE = 6;
+const int RANDOM = 7;
+const int NO_MOTION = 0; 
+
+#define RIGHT_BOTTOM 5
+#define RIGHT_UPPER 6
+#define LEFT_BOTTOM 9
+#define LEFT_UPPER 10
 
 #include <FastLED.h>
-
 #include <Wire.h>
 #include <Adafruit_MPL115A2.h>
 Adafruit_MPL115A2 mpl115a2;
@@ -35,10 +46,10 @@ void setup()
   pinMode(7, OUTPUT);//RESET SENSOR
   pinMode(8, OUTPUT);//RESET SENSOR
   
-  pinMode(5, OUTPUT);// RIGHT_DOWN
-  pinMode(6, OUTPUT);// RIGHT_UPPER
-  pinMode(9, OUTPUT);//LEFT_DOWN
-  pinMode(10, OUTPUT);//LEFT_UPPER
+  pinMode(RIGHT_BOTTOM, OUTPUT);
+  pinMode(RIGHT_UPPER, OUTPUT);
+  pinMode(LEFT_BOTTOM, OUTPUT);
+  pinMode(LEFT_UPPER, OUTPUT);
 
   Serial.begin(9600);
 }
@@ -74,8 +85,8 @@ void loop()
 
   
  if (Serial.available()) {
-     emotion = Serial.read()-48;
-     Serial.println(emotion);
+     state = Serial.read()-48;
+     Serial.println(state);
   /*** 
   
   
@@ -86,218 +97,195 @@ void loop()
    
   }
   
-    switch(emotion)   //*************anger***************************
+    switch(state)   //*************anger***************************
     {
-      case 1:
+      case ANGRY:
       {
         Serial.println("Angry");
         
-       
-        for (i = 0; i < 150; i++)
-        {
           leds[0] = CRGB::Red; 
           leds[1] = CRGB::Red; 
           FastLED.show();
-          digitalWrite(9, LOW); // LEFT_DOWN
-          digitalWrite(5, LOW); // RIGHT_DOWN
-          digitalWrite(10, HIGH); //LEFT_UPPER
-          digitalWrite(6, HIGH); // RIGHT_UPPER
-          delay(20);
-         
-        }
-        for (i = 0; i < 30; i++)
-        {
-          leds[0] = CRGB::Black;
-          leds[1] = CRGB::Black;
-          FastLED.show();
-          digitalWrite(9, HIGH);
-          digitalWrite(5, HIGH);
-          digitalWrite(10, LOW);
-          digitalWrite(6, LOW);
-          delay(20);
-         
-        }
-        for (i = 0; i < 150; i++)
-        {
-          leds[0] = CRGB::Red; 
-          leds[1] = CRGB::Red; 
-          FastLED.show();
-          digitalWrite(9, LOW); // LEFT_DOWN
-          digitalWrite(5, HIGH); // RIGHT_DOWN
-          digitalWrite(10, HIGH); //LEFT_UPPER
-          digitalWrite(6, LOW); // RIGHT_UPPER
-          delay(20);
-         
-        }
-        for (i = 0; i < 150; i++)
-        {
-           leds[0] = CRGB::Black;
-          leds[1] = CRGB::Black;
-          FastLED.show();
-          digitalWrite(9, HIGH);
-          digitalWrite(5, LOW);
-          digitalWrite(10, LOW);
-          digitalWrite(6, HIGH);
-          delay(20);
-         
-        }
-      }break;
-      
-      case 2: // *************Happy*********************
-      {
-        Serial.println("Happy");
-        
-        for (i = 0; i < 10; i++)
-        {
-          leds[0] = CRGB::Yellow; 
-          leds[1] = CRGB::Yellow; 
-          FastLED.show();
-          digitalWrite(9, HIGH);
-          digitalWrite(5, HIGH);
-          digitalWrite(10, LOW);
-          digitalWrite(6, LOW);
-          delay(20);
+          leftUp();
+          rightUp();
+          delay(2000);
           
-        }
-        for (i = 0; i < 10; i++)
-        {
           leds[0] = CRGB::Black; 
           leds[1] = CRGB::Black; 
           FastLED.show();
-          digitalWrite(9, LOW);
-          digitalWrite(5, LOW);
-          digitalWrite(10, HIGH);
-          digitalWrite(6, HIGH);
-          delay(20);
+          leftDown();
+          rightDown();
+          delay(220);
+          
+       }
+
+        
+
+      break;
+      
+      case HAPPY: // *************Happy*********************
+      {
+        Serial.println("Happy");
+          
+          leds[0] = CRGB::Yellow; 
+          leds[1] = CRGB::Yellow; 
+          FastLED.show();
+          leftDown();
+          rightDown();
+          delay(200);
+       
+          leftUp();
+          rightUp();
+          delay(200);
      
-        }
+       
 
       }break;
         
-      case 3:  //*****************Sad***************************
+      case SAD:  //*****************Sad***************************
       {
         Serial.println("Sad");
-        leds[0] = CRGB::Blue; 
-        leds[1] = CRGB::Blue;
-        FastLED.show();
-        for (i = 0; i < 200; i++)
-        {
-          digitalWrite(9, HIGH);
-          digitalWrite(5, HIGH);
-          digitalWrite(10, LOW);
-          digitalWrite(6, LOW);
-          delay(20);
+       
+          leds[0] = CRGB::Blue; 
+          leds[1] = CRGB::Blue; 
+          FastLED.show();
+          leftDown();
+          rightDown();
+          delay(4000);
+      
+          leftUp();
+          rightUp();
+          delay(100);
           
-        }
-         for (i = 0; i < 5; i++)
-        {
-          digitalWrite(9, LOW);
-          digitalWrite(5, LOW);
-          digitalWrite(10, HIGH);
-          digitalWrite(6, HIGH);
-          delay(20);
-          
-        }
+       
        
       }break;
       
-      case 4: //*************Fear*********************
+      case FEAR: //*************Fear*********************
       {
         Serial.println("Fear");
-      
-        for (i = 0; i < 2; i++)
-        {
-            leds[0] = CRGB::DarkBlue; 
-        leds[1] = CRGB::DarkBlue; // add dimming + blink 
-        FastLED.show();
-          digitalWrite(9, HIGH);
-          digitalWrite(5, HIGH);
-          digitalWrite(10, LOW);
-          digitalWrite(6, LOW);
-          delay(20);
-          
-        }
-        for (i = 0; i < 5; i++)
-        {
-          leds[0] = CRGB::Black; 
-           leds[1] = CRGB::Black;
-           FastLED.show();
-          digitalWrite(9, LOW);
-          digitalWrite(5, LOW);
-          digitalWrite(10, HIGH);
-          digitalWrite(6, HIGH);
-          delay(20);
+        
+         leds[0] = CRGB::Black; 
+         leds[1] = CRGB::Black; 
+         FastLED.show();
+         leftUp();
+         rightUp();
+         delay(40);
+        
+         leds[0] = CRGB::DarkBlue; 
+         leds[1] = CRGB::DarkBlue; 
+         FastLED.show();
+         leftDown();
+         rightDown();
+         delay(100);
      
-        }
       }break;
 
-      case 5:  //************disgust***********
+      case DISGUST:  //************disgust***********
       {
         Serial.println("Disgust");
-        leds[0] = CRGB::Green;
-        leds[1] = CRGB::Green; 
-        FastLED.show();
-         for (i = 0; i < 200; i++)
-        {
-          digitalWrite(9, HIGH);
-          digitalWrite(5, HIGH);
-          digitalWrite(10, LOW);
-          digitalWrite(6, LOW);
-          delay(20);
+      
+          leds[0] = CRGB::Green;
+          leds[1] = CRGB::Green; 
+          FastLED.show();
+          leftDown();
+          rightDown();
+          delay(4000);
           
-        }
-        for (i = 0; i < 50; i++)
-        {
-          digitalWrite(9, LOW);
-          digitalWrite(5, LOW);
-          digitalWrite(10, HIGH);
-          digitalWrite(6, HIGH);
-          delay(20);
+          leftUp();
+          rightUp();
+          delay(1000);
          
-        }
-        
-        
       }break;
 
-       case 6: //************suprise***********
+       case SUPRISE: //************suprise***********
       {
-        Serial.println("Suprise");
-         leds[0] = CRGB::White; 
-         leds[1] = CRGB::White; // add blink 
-         FastLED.show();  
-        for (i = 0; i < 200; i++)
-        {
-          
-
-          digitalWrite(9, LOW);
-          digitalWrite(5, LOW);
-          digitalWrite(10, HIGH);
-          digitalWrite(6, HIGH);
-          delay(20);
-          
-        }
-        for (i = 0; i < 10; i++)
-        {
-          digitalWrite(9, HIGH);
-          digitalWrite(5, HIGH);
-          digitalWrite(10, LOW);
-          digitalWrite(6, LOW);
-          delay(20);
-         
-        }
+          Serial.println("Suprise");
+          leds[0] = CRGB::White; 
+          leds[1] = CRGB::White; 
+          FastLED.show();  
         
+          leftUp();
+          rightUp();
+          delay(4000);
+
+          leds[0] = CRGB::Black; 
+          leds[1] = CRGB::Black; // add blink 
+          FastLED.show();  
+          leftDown();
+          rightDown();
+          delay(200);
+         
       }break;
 
-       default: // **************** steady state ********************
+       case RANDOM: // **************** Random Motion ********************
       {
-        digitalWrite(9, LOW);
-        digitalWrite(5, LOW);
-        digitalWrite(10, LOW);
-        digitalWrite(6, LOW);
-      }
+          leftUp();
+          rightUp();
+          delay(1000);
+         
+          leftDown();
+          rightDown();
+          delay(600);
+   
+          leftSteady();
+          rightSteady();
+          delay(2500);
+      
+          leftUp();
+          rightDown();
+          delay(1600);
+    
+          leftDown();
+          rightUp();
+          delay(1600);
         
-    }
+      }break;
+      
+      case NO_MOTION:
+      {
+           leftSteady();
+           rightSteady();
+        
+      }break;
+     }
+        
 
 }
 
+void leftUp(){
+
+          digitalWrite(LEFT_BOTTOM, LOW);
+          digitalWrite(LEFT_UPPER, HIGH);
+}
+
+void leftDown(){
+  
+          digitalWrite(LEFT_BOTTOM, HIGH);
+          digitalWrite(LEFT_UPPER, LOW);
+         
+}
+
+void leftSteady(){
+          digitalWrite(LEFT_BOTTOM, LOW);
+          digitalWrite(LEFT_UPPER, LOW);
+}
+
+void rightUp(){
+        digitalWrite(RIGHT_UPPER, HIGH);
+        digitalWrite(RIGHT_BOTTOM, LOW);
+}
+
+void rightDown(){
+  
+        digitalWrite(RIGHT_UPPER, LOW);
+        digitalWrite(RIGHT_BOTTOM, HIGH);
+}
+
+void rightSteady(){
+  
+          digitalWrite(RIGHT_BOTTOM, LOW);
+          digitalWrite(RIGHT_UPPER, LOW);
+}
+          
 
